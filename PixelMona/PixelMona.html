@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>"Pixel" Mona Lisa using CreateJS</title>
+    <script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+    <script src="http://code.createjs.com/tweenjs-0.4.0.min.js"></script>
+    <script src="http://code.createjs.com/preloadjs-0.3.0.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        canvas{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            display: block;
+
+            margin-left: -168px;
+            margin-top: -250px;
+
+            background-color: #252525;
+            border: 5px solid #000000;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.65);
+        }
+    </style>
+    <script>
+
+        var canvas, stage;
+        var queue;
+        var mona;
+        var ss;
+        var container;
+        var actualIndex = 0;
+        var currentIndex = 0;
+        var goingup = true;
+
+        function init() {
+            canvas = document.getElementById("testCanvas");
+            //check to see if we are running in a browser with touch support
+            stage = new createjs.Stage(canvas);
+            stage.enableMouseOver(10);
+
+            container = new createjs.Container();
+
+            queue = new createjs.LoadQueue(false);
+            queue.addEventListener("fileload", handleFileComplete);
+            queue.addEventListener("complete", handleAssetComplete);
+            queue.addEventListener("progress", handleAssetProgress);
+
+            queue.loadFile({id:"assets", src:"Mona.json"});
+
+            createjs.Ticker.setFPS(24);
+            createjs.Ticker.addEventListener("tick", tick);
+        }
+
+        function handleFileComplete(event) {
+            var data = queue.getResult("assets");
+            ss = new createjs.SpriteSheet(data);
+
+            mona = new createjs.BitmapAnimation(ss);
+            mona.gotoAndStop("all");
+            mona.regX = mona.width>>1;
+            mona.regY = mona.height>>1;
+            mona.x = mona.width>>1;
+            mona.y = mona.height>>1;
+
+            container.addEventListener("click", handleClick);
+            container.cursor = "pointer";
+
+            container.addChild(mona);
+
+            container.x = canvas.width - mona.width>>1;
+            container.y = canvas.height - mona.height>>1;
+
+            stage.addChild(container);
+
+        }
+        function handleAssetProgress(event) {}
+
+        function handleAssetComplete(event) { }
+
+
+        function runPixel() {
+            actualIndex = (goingup) ? 10 : 0;
+            createjs.Tween.get(this, {override:true})
+                          .to({currentIndex:actualIndex},1000, createjs.Ease.quartOut)
+                          .onChange = handleUpdate;
+        }
+
+        function handleUpdate() {
+            var frameStr = "Mona_"+(Math.abs(currentIndex|0));
+            mona.gotoAndStop(frameStr);
+        }
+
+        function handleClick(event) {
+            runPixel();
+            goingup = !goingup;
+        }
+
+        function tick() {
+            stage.update();
+        }
+    </script>
+
+</head>
+
+<body onload="init();">
+<canvas id="testCanvas" width="337" height="500">
+    "Pixel" Mona Lisa using CreateJS.
+</canvas>
+</body>
+</html>

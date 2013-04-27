@@ -1,0 +1,36 @@
+{
+"images": ["Mona.png"],
+"frames": [
+
+    [341, 1508, 337, 500], 
+    [680, 1006, 337, 500], 
+    [341, 1006, 337, 500], 
+    [2, 1508, 337, 500], 
+    [2, 1006, 337, 500], 
+    [680, 504, 337, 500], 
+    [341, 504, 337, 500], 
+    [2, 504, 337, 500], 
+    [680, 2, 337, 500], 
+    [341, 2, 337, 500], 
+    [2, 2, 337, 500]
+],
+"animations": {
+    
+        "Mona_0":[0], 
+        "Mona_1":[1],
+        "Mona_10":[2],
+        "Mona_2":[3],
+        "Mona_3":[4],
+        "Mona_4":[5],
+        "Mona_5":[6],
+        "Mona_6":[7],
+        "Mona_7":[8],
+        "Mona_8":[9],
+        "Mona_9":[10],
+        "all":{"frames":[0, 1, 3, 4, 5, 6, 7, 8, 9,10, 2], "frequency":1}
+},
+"texturepacker": [
+        "SmartUpdateHash: $TexturePacker:SmartUpdate:214583db9050460083f836e586e14e64$",
+        "Created with TexturePacker (http://www.texturepacker.com) for EaselJS"
+]
+}
