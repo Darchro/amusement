@@ -11,9 +11,9 @@ Sebastian DeRossi<br/>
 Community Evangelist - CreateJS<br/>
 <a href="mailto:sebastian@gskinner.com">gskinner.com</a>     
 
-[twitter:@derossi_s](www.twitter.com/derossi_s) <br/>
-[youtube:www.youtube.com/sebastianderossi](youtube:www.youtube.com/sebastianderossi)<br/>
-[vimeo:www.vimeo.com/sderossi](vimeo:www.vimeo.com/sderossi)  
+[twitter:@derossi_s](http://www.twitter.com/derossi_s) <br/>
+[youtube:www.youtube.com/sebastianderossi](http://www.youtube.com/sebastianderossi)<br/>
+[vimeo:www.vimeo.com/sderossi](http://www.vimeo.com/sderossi)  
 
 ----------------
 All experiments found here use CreateJS collection of libs including:
