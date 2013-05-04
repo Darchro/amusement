@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+
+    <script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>  
+	<script src="http://code.createjs.com/tweenjs-0.4.0.min.js"></script>
+    <script src="./libs/dat.gui.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+    </style>
+
+    <script>
+
+        var canvas, stage;
+        var settings;
+        var source;
+
+        function init() {
+            canvas = document.getElementById("testCanvas");
+            //check to see if we are running in a browser with touch support
+            stage = new createjs.Stage(canvas);
+
+            settings = {
+                size:25,
+                padding:1,
+                changeEffect:handleChangeEffect
+            };
+
+            var gui = new dat.GUI();
+            gui.add(settings, 'size', 10, 35).step(1);
+            gui.add(settings, 'padding', 1, 20).step(1);
+            gui.add(settings, 'changeEffect');
+
+            createjs.Ticker.setFPS(60);
+            createjs.Ticker.addEventListener("tick", tick);
+
+            container = new createjs.Container();
+            stage.addChild(container);
+
+            var loader = new Image();
+            loader.onload = handleLoad;
+            loader.src = "./images/mona.jpg";
+        }
+
+        function handleLoad() {
+            source = new createjs.Bitmap(this);
+            createGrid();
+
+        }
+
+        function handleChangeEffect() {
+            createGrid();
+        }
+
+        function createGrid() {
+            container.removeAllChildren();
+
+            var width = settings.size;
+            var height = settings.size;
+            var padding = settings.padding;
+            var cols = Math.ceil(source.image.width/width);
+            var rows = Math.ceil(source.image.height / height);
+            var total = cols*rows;
+
+            for(var i=0;i<total;i++) {
+                var square = new createjs.Bitmap(source.cacheCanvas);
+                source.uncache();
+
+                var x = (width + padding) * (i%cols) | 0;
+                var y = (i/cols | 0) * (height+padding) | 0;
+
+                source.cache(x, y, width, height, 1);
+
+                square.regX = width>>1;
+                square.regY = height>>1;
+                square.x = x;
+                square.y = y;
+
+                createjs.Tween.get(square, {loop:true}).to({scaleX:1.25, scaleY:1.25}, (0.5+i*0.04)*100)
+                                                       .to({scaleX:2.00, scaleY:2.00}, (0.5+i*0.04)*100)
+                                                       .to({scaleX:0.75, scaleY:0.75}, (0.5+i*0.04)*100)
+                                                       .to({scaleX:1.0, scaleY:1.0}, (0.5+i*0.04)*100);
+                container.addChild(square);
+
+            }
+
+            container.x = canvas.width - (cols*width)>>1;
+            container.y = canvas.height - (rows*height)>>1;
+        }
+
+        function tick() {
+            stage.update();
+        }
+    </script>
+
+</head>
+
+<body onload="init();">
+<canvas id="testCanvas" width="850" height="600"></canvas>
+</body>
+</html>

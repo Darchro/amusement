@@ -1,10 +1,10 @@
-Pixel Mona
+Mona Lisa Scale
 =========
 
-I wanted to create a mosaic type effect using [CreateJS](http://www.createjs.com/)... I might have taken a shortcut but hey!...<br>  
-Here is a [preview](http://youtu.be/lqCuFE-nCEE) video. <br/>
+I wanted to give La Gioconda A.K.A Mona List a "bubbly" effect. <br>
+Here is a [preview](http://youtu.be/yY_fM0JBHVQ) video. <br/>
 
-![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/PixelMona/pixelmona.png) 
+![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/MonaLisaScale/monalisascale.png) 
 
 Who?
 ----------------
@@ -17,11 +17,14 @@ Community Evangelist - CreateJS<br/>
 [vimeo:www.vimeo.com/sderossi](http://www.vimeo.com/sderossi)  
 
 ----------------
-This experiment uses the following CreateJS libs:
+This experiment uses the following CreateJS libs: 
 
-- [EaselJS](https://github.com/CreateJS/EaselJS) 
-- [PreloadJS](https://github.com/CreateJS/PreloadJS)  
-- [TweenJS](https://github.com/CreateJS/TweenJS)  
+- [EaselJS](https://github.com/CreateJS/EaselJS)  
+- [TweenJS](https://github.com/CreateJS/TweenJS)   
+
+Third party libs:
+
+- [dat.GUI](http://code.google.com/p/dat-gui/)  
 
 For more information
 ---------------------
@@ -33,7 +36,8 @@ Visit the following:
 - [Community Forum](http://www.community.createjs.com)
 - [CreateJS Git Hub](https://github.com/CreateJS)  
 
-If anyone has any suggestions for how we can improve the libraries, or want to share examples or fixes don't hesitate to get in touch.     
+If anyone has any suggestions for how we can improve the libraries, or want to share examples or fixes don't hesitate to get in touch.<br/>      
 
-------------
+--------------------------
 All code is <b>copyright 2013 Sebastian DeRossi</b> and is free to use, copy, and modify under the MIT license.
+
