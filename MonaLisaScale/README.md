@@ -1,7 +1,7 @@
 Mona Lisa Scale
 =========
 
-I wanted to give La Gioconda A.K.A Mona List a "bubbly" effect. <br>
+I wanted to give La Gioconda A.K.A Mona Lisa a "bubbly" effect. <br>
 Here is a [preview](http://youtu.be/yY_fM0JBHVQ) video. <br/>
 
 ![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/MonaLisaScale/monalisascale.png) 
