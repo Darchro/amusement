@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+
+    <script src="http://code.createjs.com/createjs-2013.02.12.min.js"></script>
+    <script src="./libs/dat.gui.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+    </style>
+
+    <script>
+
+        var canvas, stage;
+        var squares = [];
+        var container;
+        var settings;
+        var isChanged = true; 
+		var logoBmp;
+
+        function init() {
+            canvas = document.getElementById("testCanvas");
+            //check to see if we are running in a browser with touch support
+            stage = new createjs.Stage(canvas);
+            stage.enableMouseOver(10);
+            createjs.Ticker.setFPS(60);
+            createjs.Ticker.addEventListener("tick", tick);
+
+            settings = {
+                max:5,
+                min:1,
+                changeEffect:handleChangeEffect
+            };
+
+            var gui = new dat.GUI();
+
+            gui.add(settings, 'max', 0.1, 5);
+            gui.add(settings, 'min', 0.1, 2);
+            gui.add(settings, 'changeEffect');
+
+            var loader = new Image();
+            loader.onload = handleLoad;
+            loader.src = "mona.jpg";  
+			
+			var logo = new Image();  
+		   	logo.src = "createJS.png"
+		    logo.onload = handleLogo;
+        } 
+
+		function handleLogo() {
+			logoBmp = new createjs.Bitmap(this);
+            logoBmp.x = stage.canvas.width - this.width;
+            logoBmp.y = stage.canvas.height - this.height;
+
+            stage.addChild(logoBmp); 
+			stage.update();      
+		}
+
+        function handleChangeEffect() {
+            isChanged = !isChanged;
+        }
+
+        function handleLoad() {
+            var width = 25;
+            var height = 25;
+            var padding = 1;
+
+            var cols = Math.ceil(this.width/width);
+            var rows = Math.ceil(this.height/height);
+
+            container = new createjs.Container();
+            container.cursor = "pointer";
+
+            var source = new createjs.Bitmap(this);
+            var total = cols*rows;
+
+            for(var i=0;i<total;i++) {
+                var square = new createjs.Bitmap(source.cacheCanvas);
+                source.uncache();
+                var x = (width + padding) * (i%cols);
+                var y = (i/cols | 0) * (height+padding);
+                source.cache(x, y, width, height, 1);
+                square.regX = width>>1;
+                square.regY = height>>1;
+                square.x = x;
+                square.y = y;
+                squares.push(square);
+                container.addChild(square);
+            }
+
+            container.x = canvas.width - (cols*width)>>1;
+            container.y = canvas.height - (rows*height)>>1
+            stage.addChild(container);
+        }
+
+        function handleMouseOver(target) {
+            var maxScale = settings.max;
+            var minScale = settings.min;
+            var dx = container.x + (target.x - stage.mouseX) ;
+            var dy = container.y + (target.y -stage.mouseY) ;
+
+            var distance = Math.sqrt(dx*dx+dy*dy);
+            var value = (isChanged) ? (distance/100) : (100/distance);
+            var scale = Math.max(minScale, Math.min(value, maxScale));
+
+            target.scaleX = target.scaleY = scale;
+            if (isChanged) {
+                if (target.scaleX == maxScale) {
+                    container.setChildIndex(target, container.getNumChildren()-1);
+                }
+            }
+        }
+
+        function tick() {
+            var l = squares.length;
+            for(var i=0;i<l;i++) {
+                var square = squares[i];
+                handleMouseOver(square)
+            }
+            stage.update();
+        }
+    </script>
+
+</head>
+
+<body onload="init();">
+<canvas id="testCanvas" width="1024" height="600"></canvas>
+</body>
+</html>
