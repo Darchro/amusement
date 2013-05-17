@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+
+    <script src="http://code.createjs.com/createjs-2013.02.12.min.js"></script>
+    <style>
+        body {
+            padding: 0px;
+            margin: 0px;
+            background-color: #f7f7f7;
+        }
+    </style>
+    <script>
+
+        var canvas, stage;
+        var bg;
+
+        function init () {
+            var logo = new Image();
+            logo.src = "createJS.png"
+            logo.onload = start;
+        }
+
+        function start() {
+            canvas = document.getElementById("testCanvas");
+            //check to see if we are running in a browser with touch support
+            stage = new createjs.Stage(canvas);
+            stage.autoClear = false;
+            createjs.Ticker.setFPS(31);
+            createjs.Ticker.addEventListener("tick", tick);
+
+            var logoBmp = new createjs.Bitmap(this);
+            logoBmp.x = stage.canvas.width - this.width;
+            logoBmp.y = stage.canvas.height - this.height;
+
+            //SD: if you want the fade effect leave bg shape where it is.
+            bg = new createjs.Shape();
+            bg.graphics.f("#f7f7f7").dr(0, 0, canvas.width, canvas.height-this.height);
+            bg.alpha = 0.05;
+            stage.addChild(bg);
+
+            for(var i=0;i<10;i++) {
+                var s = new createjs.Shape();
+                var g = s.graphics;
+                s.angle = 0;
+                s.radius = ((i+1)*4)*6;
+                s.thickness = ((i+1)*4)*2;
+                s.color = createjs.Graphics.getRGB(Math.random() * 0xFF | 0, Math.random() * 0xFF | 0, Math.random() * 0xFF | 0);
+                //SD: this effect doesn't work to hot if fade effect is on.
+                //s.compositeOperation = "lighter";
+
+                var tween = createjs.Tween.get(s, {loop:true}).to({angle:360}, 2000+Math.random()*2000|0 | 0, createjs.Ease.circInOut);
+                tween.addEventListener("change", handleChange);
+                stage.addChild(s);
+            }
+
+
+
+            stage.addChild(logoBmp);
+
+        }
+
+        function handleChange(event) {
+            var s = event.target.target;
+            s.angle += 1;
+            var endAngle = (s.angle) * Math.PI / 180;
+            s.graphics.clear();
+            s.graphics.ss(s.thickness, "round", "round").s(s.color).arc(140*4, 140*2.5, s.radius, 0, endAngle, false);
+        }
+
+        function tick() {
+
+            stage.update();
+        }
+    </script>
+
+</head>
+
+<body onload="init();">
+<canvas id="testCanvas" width="1024" height="728"></canvas>
+</body>
+</html>

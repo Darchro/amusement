@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+
+    <script src="http://code.createjs.com/createjs-2013.02.12.min.js"></script>
+
+    <script>
+
+        var canvas, stage;
+        var g;
+        var s;
+        var deg = 0;
+        var radius = 100;
+        var lineThickness = 10;
+        var speed = 5;
+        var color = "#000000";
+        var bg;
+
+        function init() {
+            canvas = document.getElementById("testCanvas");
+            //check to see if we are running in a browser with touch support
+            stage = new createjs.Stage(canvas);
+            createjs.Ticker.setFPS(31);
+            createjs.Ticker.addEventListener("tick", tick);
+
+            s = new createjs.Shape();
+            g = s.graphics;
+            stage.autoClear = false;
+            bg = new createjs.Shape();
+            bg.graphics.f("#ffffff").dr(0, 0, canvas.width, canvas.height);
+            bg.alpha = 0.2;
+            stage.addChild(bg);
+            stage.addChild(s);
+
+        }
+
+        function tick() {
+            deg += speed;
+            if (deg % 360 == 0) {
+                radius = 100 + Math.random() * 60 | 0;
+                lineThickness = 5 + Math.random()*10 | 0;
+                color = createjs.Graphics.getRGB(Math.random() * 0xFF | 0, Math.random() * 0xFF | 0, Math.random() * 0xFF | 0)
+            }
+
+            var x = radius+lineThickness;
+            var y = radius+lineThickness;
+            var startAngle = 0;
+            var rad = (deg % 360) * Math.PI / 180;
+            var endAngle = rad;
+            g.clear();
+            g.ss(lineThickness, "square", "square").s(color).arc(x, y, radius, startAngle, endAngle);
+            stage.update();
+        }
+    </script>
+
+</head>
+
+<body onload="init();">
+<canvas id="testCanvas" width="1024" height="728"></canvas>
+</body>
+</html>
