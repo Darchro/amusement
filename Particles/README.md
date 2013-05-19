@@ -12,7 +12,7 @@ Here is another [preview](http://youtu.be/3b0RWJX7QVo) video. <br/>
 ![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/Particles/Particles_color1.png) 
 ![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/Particles/Particles_color2.png) 
 ![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/Particles/Particles_color3.png)  
-![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/Particles/Particles_colors4.png) 
+![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/Particles/Particles_color4.png) 
 
 Who?
 ----------------
