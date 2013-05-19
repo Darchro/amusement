@@ -4,8 +4,8 @@ Fun with Particles
 Saw this JavaScript [experiment](http://www.tmtr.jp/dev/JS/Untitled-2/) in the morning from [Tomohiro Terashima](http://www.tmtr.jp/), looked cool...<br/>
 thought to myself would be neat make something similar with CreateJS! <br/>
 What do you guys think?<br/>
-Here is a [preview](http://youtu.be/MC4ykohI54c) video. <br/>  
-Here is a [preview](http://youtu.be/3b0RWJX7QVo) video. <br/>    
+Here is a [preview](http://youtu.be/MC4ykohI54c) video.  
+Here is another [preview](http://youtu.be/3b0RWJX7QVo) video. <br/>    
 
 ![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/Particles/Particles1.png) 
 ![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/Particles/Particles2.png)   
