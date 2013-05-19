@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+
+    <script src="http://code.createjs.com/easeljs-0.6.1.min.js"></script>
+    <script src="./libs/dat.gui.min.js"></script>
+
+    <script>
+
+        var canvas, stage;
+        var total = 1000;
+        var left;
+        var right;
+        var top;
+        var bottom;
+        var shapes;
+        var bg;
+        var settings;
+        var isLighter = true;
+
+        function init() {
+            canvas = document.getElementById("testCanvas");
+
+            //check to see if we are running in a browser with touch support
+            stage = new createjs.Stage(canvas);
+            stage.autoClear = false;
+            createjs.Ticker.setFPS(31);
+            createjs.Ticker.addEventListener("tick", tick);
+
+            var logo = new Image();
+            logo.src = "createJS.png"
+            logo.onload = logoLoaded;
+
+            right = canvas.width;
+            left = 0;
+            top = 0;
+            bottom = canvas.height;
+            shapes = [];
+
+            settings = {
+                speedX:10,
+                speedY:10,
+                changeEffect:changeEffect,
+                color:[0, 22, 255]
+            };
+
+            var gui = new dat.GUI();
+            gui.add(settings, 'speedX', 1, 50).step(1);
+            gui.add(settings, 'speedY', 1, 50).step(1);
+            var colorUI = gui.addColor(settings, 'color');
+
+            colorUI.onChange(function(value) {
+
+                var red = value[0];
+                var green = value[1];
+                var blue = value[2];
+
+                 for(var i=0;i<shapes.length;i++) {
+                     var s = shapes[i];
+                     var g = s.graphics;
+                     g.clear().beginFill(createjs.Graphics.getRGB(red|0, green|0, blue|0)).drawCircle(0, 0, s.width).endFill();
+                     s.updateCache(-10, -10 , 20, 20);
+                     s.compositeOperation = "lighter";
+                 }
+
+            });
+            gui.add(settings, 'changeEffect');
+
+
+
+            for(var i=0;i<total;i++) {
+                var s = getSprite();
+                s.cache(-10, -10 , 20, 20);
+                s.compositeOperation = "lighter";
+                resetSprite(s, i);
+                shapes.push(s);
+                stage.addChild(s);
+            }
+
+            bg = new createjs.Shape();
+            bg.graphics.beginFill("#000000").drawRect(0, 0, right, bottom).endFill();
+            stage.addChild(bg);
+            bg.alpha = 0.05;
+        }
+
+        function logoLoaded() {
+            var logoBmp = new createjs.Bitmap(this);
+            logoBmp.x = stage.canvas.width - this.width;
+            logoBmp.y = stage.canvas.height - this.height;
+
+            stage.addChild(logoBmp);
+        }
+
+        function changeEffect() {
+            isLighter = !isLighter;
+            for(var i=0;i<shapes.length;i++) {
+                var s = shapes[i];
+                s.angle = 0;
+                //s.delay = Math.random() * i;
+                var radius = 10+Math.random() * 10 | 0;
+                var angle = Math.random() * Math.PI*2;
+                //s.x = right - s.width >> 1;
+                //s.y = bottom - s.height>>1;
+                s.speedX = Math.cos(angle) * radius;
+                s.speedY = Math.sin(angle) * radius;
+            }
+        }
+
+        function getSprite() {
+            var s = new createjs.Shape();
+            s.angle = 0;
+            var g = s.graphics;
+            var scale = 1 + Math.random()*6 | 0;
+            //g.beginFill(createjs.Graphics.getRGB(Math.random()*255|0, Math.random()*255|0, Math.random()*255|0)).drawCircle(0, 0, scale).endFill();
+            var red = settings.color[0];
+            var green = settings.color[1];
+            var blue = settings.color[2];
+            g.beginFill(createjs.Graphics.getRGB(red, green, blue)).drawCircle(0, 0, scale).endFill();
+            s.width = s.height = scale;
+            return s;
+        }
+
+        function resetSprite(s, index) {
+            s.x = right - s.width >> 1;
+            s.y = bottom - s.height>>1;
+            var radius = 10+Math.random() * 10 | 0;
+            var angle = Math.random() * Math.PI*2;
+            s.originalRadius = radius;
+            s.delay = Math.random() * index;
+            s.speedX = Math.cos(angle) * radius;
+            s.speedY = Math.sin(angle) * radius;
+            s.angle = 0;
+            s.lifetime = Math.random()*500 | 0;
+
+            s.scaleX = s.scaleY = Math.random()*1;
+            s.index=0;
+        }
+
+        function moveParticle(s, index, i) {
+            s.angle += 0.015;
+            var radX = (isLighter) ? Math.sin(s.angle) : Math.cos(s.angle);
+            var radY = (isLighter) ? Math.cos(s.angle) : Math.sin(s.angle);
+            s.x += radX * s.speedX/settings.speedX;
+            s.y += radY * s.speedY/settings.speedY;
+
+            s.lifetime--;
+
+            /*if (s.x-s.width>>1 > right || s.x+s.width>>1 < left || s.y-s.height>>1 > bottom || s.y + s.height < top) {
+                resetSprite(s, i)
+            }*/
+
+            if (s.lifetime < 0) {
+                s.lifetime = Math.random()*500 | 0;
+                resetSprite(s, i)
+            }
+        }
+
+        function tick() {
+            for(var i=0;i<shapes.length;i++) {
+                var s = shapes[i];
+
+                if (s.index >= s.delay) {
+                    moveParticle(s, s.index, i);
+                }
+
+                s.index++
+            }
+
+            stage.update();
+        }
+    </script>
+
+</head>
+
+<body onload="init();" bgcolor="#000000">
+<canvas id="testCanvas" width="1024" height="500"></canvas>
+</body>
+</html>
