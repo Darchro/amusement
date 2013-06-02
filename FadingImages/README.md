@@ -7,6 +7,7 @@ Recently, I was asked to create a photo gallery. I thought it would be fun to us
 <li>TweenJS to create the Fading effect. </li>
 <li>EaselJS to render everything.</li>
 </ul>
+...oh ya! throw in logic to maintain aspect ratio when resizing the browser :)
 
 Here is a [preview](http://youtu.be/DWE_XGrCiwo) video. <br/>
 
