@@ -10,9 +10,9 @@ Recently, I was asked to create a photo gallery. I thought it would be fun to us
 
 Here is a [preview](http://youtu.be/DWE_XGrCiwo) video. <br/>
 
-![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/FadingImage/FadingImages1.png) 
-![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/FadingImage/FadingImages2.png)
-![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/FadingImage/FadingImages3.png) 
+![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/FadingImages/FadingImages1.png) 
+![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/FadingImages/FadingImages2.png)
+![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/FadingImages/FadingImages3.png) 
 
 Who?
 ----------------
