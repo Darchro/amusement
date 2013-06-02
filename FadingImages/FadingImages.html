@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <script src="http://code.createjs.com/createjs-2013.05.14.min.js"></script>
+   
+    <style type="text/css">
+        html, body{
+            margin: 0px;
+            background-color:#f7f7f7;
+        }
+
+    </style>
+    <script>
+
+        var canvas, stage;
+        var images;
+        var picArray;
+        var currentImage;
+        var index;
+        var fadeTime;
+        var logo;
+
+        function init() {
+            canvas = document.getElementById("testCanvas");
+
+            //check to see if we are running in a browser with touch support
+            stage = new createjs.Stage(canvas);
+            createjs.Ticker.setFPS(31);
+            createjs.Ticker.addEventListener("tick", tick);
+
+            index = 1;
+
+            images = images || [];
+            var manifest = [
+                {src:"./images/image1.png", id:"image1"},
+                {src:"./images/image2.png", id:"image2"},
+                {src:"./images/image3.png", id:"image3"},
+                {src:"./images/image4.png", id:"image4"},
+                {src:"./images/image5.png", id:"image5"},
+                {src:"./images/createJS.png", id:"logo"}
+            ]
+
+            queue = new createjs.LoadQueue(false);
+            queue.onFileLoad = handleFileLoad;
+            queue.onComplete = handleComplete;
+            queue.loadManifest(manifest);
+        }
+
+        function handleFileLoad(event) {
+            var item = event.item;
+            if (item.type == createjs.LoadQueue.IMAGE) {
+                images.push(event.result);
+            }
+        }
+
+        function onResize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            for(var i=0;i<5;i++) {
+                var bmp = picArray[i];
+                var ratio = getAspectRatio(bmp.image.width, bmp.image.height, canvas.width, canvas.height);
+                bmp.scaleX = ratio.width / bmp.image.width;
+                bmp.scaleY = ratio.height / bmp.image.height;
+                bmp.x = (canvas.width - (bmp.image.width * bmp.scaleX) >> 1);
+                bmp.y = (canvas.height - (bmp.image.height * bmp.scaleY) >> 1);
+            }
+
+            logo.x = canvas.width - logo.image.width;
+            logo.y = canvas.height - logo.image.height;
+        }
+
+        function getAspectRatio (width, height, maxWidth, maxHeight) {
+            var ratio = Math.min(maxWidth / width, maxHeight / height );
+            return { width:width*ratio, height:height*ratio };
+        }
+
+        function handleComplete(event) {
+            pic1 = new createjs.Container();
+            pic2 = new createjs.Container();
+
+            picArray = [];
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+			for(var i=0;i<5;i++) {
+                var bmp = new createjs.Bitmap(images[i]);
+				picArray.push(bmp);
+			}
+
+            logo = new createjs.Bitmap(queue.getResult("logo"));
+            fadeTime = 5;
+
+            pic1.addChild(picArray[0]);
+            pic2.addChild(picArray[1]);
+
+            pic1.alpha = pic2.alpha = 0;
+
+            currentImage = pic1;
+
+            stage.addChild(pic1, pic2);
+            stage.addChild(logo);
+
+            createjs.Tween.get(currentImage).to({alpha:1}, 1000);
+            createjs.Tween.get(this, {loop:true}).wait(fadeTime * 1000).call(fade, {}, this);
+
+            window.addEventListener('resize', onResize, false);
+
+            onResize();
+        }
+
+        function fadeKill(tween) {
+            currentImage.removeAllChildren();
+            currentImage.addChild(picArray[++index%picArray.length]);
+            currentImage = (currentImage == pic1) ? pic2 : pic1;
+        }
+
+        function fade() {
+            createjs.Tween.get((currentImage == pic1) ? pic2 : pic1).to({alpha:1}, 1000);
+            createjs.Tween.get((currentImage == pic1) ? pic1 : pic2).to({alpha:0}, 1000).call(fadeKill, {}, this);
+        };
+
+        function tick() {
+            stage.update();
+        }
+    </script>
+
+</head>
+
+<body onload="init();">
+<canvas id="testCanvas" width="792" height="792"></canvas>
+</body>
+</html>
