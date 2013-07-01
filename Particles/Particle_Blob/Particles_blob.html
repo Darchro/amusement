@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+
+    <script src="http://code.createjs.com/createjs-2013.02.12.min.js"></script>
+    <script src="../libs/dat.gui.min.js"></script>
+    <script src="../libs/stats.min.js"></script>
+
+    <style type="text/css">
+        body
+        {
+            margin: 0;
+            padding: 0;
+            background: #000000;
+        }
+
+    </style>
+    <script>
+
+        var canvas, stage;
+        var clips = [];
+        var len;
+        var bg;
+        var logoBmp;
+        var particle;
+        var emitter;
+
+        function init() {
+            canvas = document.getElementById("testCanvas");
+            //check to see if we are running in a browser with touch support
+            stage = new createjs.Stage(canvas);
+            //stage.autoClear = false;
+
+            settings = {
+                gravityX:10,
+                gravityY:50
+            };
+
+            /*var stats = new Stats();
+            stats.setMode(0); // 0: fps, 1: ms
+
+            stats.domElement.style.position = 'relative';
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+            setInterval( function () {
+                stats.begin();
+
+                stats.end();
+            }, 1000 / 60 );*/
+
+            bg = new createjs.Shape();
+            bg.graphics.beginFill("#000000").drawRect(0, 0, canvas.width, canvas.height).endFill();
+            //stage.addChild(bg);
+            //bg.alpha = 0.013;
+
+            len = 50;
+
+            particle = new Image();
+            particle.src = "../images/particle.png";
+            particle.onload = handleParticleLoad;
+
+            emitter = new Image();
+            emitter.src = "../images/emitter.png";
+
+            var logo = new Image();
+            logo.src = "../images/createJS.png"
+            logo.onload = logoLoaded;
+
+            createjs.Ticker.setFPS(40);
+            createjs.Ticker.addEventListener("tick", tick);
+
+            window.addEventListener('resize', handleResize, false);
+
+            //document.body.appendChild( stats.domElement );
+        }
+
+        function handleResize() {
+            resize();
+        }
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            bg.graphics.clear().f("#000000").dr(0, 0, canvas.width, canvas.height).ef();
+
+            if (logoBmp) {
+                logoBmp.x = stage.canvas.width - logoBmp.image.width;
+                logoBmp.y = stage.canvas.height - logoBmp.image.height;
+            }
+
+            stage.addChild(logoBmp);
+        }
+
+        function handleParticleLoad() {
+            //setup();
+            emitter.onload = handleEmitterLoad;
+        }
+
+        function handleEmitterLoad() {
+            setup();
+            resize();
+        }
+
+        function logoLoaded() {
+            //SD:Adding logo to lower-right hand side
+            logoBmp = new createjs.Bitmap(this);
+            logoBmp.x = stage.canvas.width - this.width;
+            logoBmp.y = stage.canvas.height - this.height;
+
+            stage.addChild(logoBmp);
+        }
+
+        function setup() {
+            for(var i=0;i<len;i++) {
+                var c = getSprite();
+                c.width = c.image.width>>1;
+                c.height = c.image.height>>1;
+                c.compositeOperation = "lighter";
+                c.x = canvas.width - c.width >> 1;
+                c.y = canvas.height - c.height >> 1;
+                c.angle = Math.PI * 4 * Math.random();
+                c.regX = c.width>>1;
+                c.regY = c.height>>1;
+                c.delay = len-i;
+                c.index = 0;
+                c.ease = 0.106;
+                c.drag = 0.95;
+                c.gravityX = getRange(.45,-0.5);//Math.random()*0.5;
+                c.gravityY = 0.13
+                c.scaleX = c.scaleY = getRange(2, 1)//Math.random()*1.5 + 1.1;
+                c.xSpeed = (Math.random() * 5)  * Math.cos(c.angle);
+                c.ySpeed = (Math.random() * 15) * Math.sin(c.angle);
+
+                clips.push(c);
+                stage.addChild(c);
+            }
+        }
+
+        function getRange(max, min) {
+            var scale = max - min;
+            return Math.random()*scale + min;
+        }
+
+        function getSprite() {
+            var image = (Math.random() < 0.5)  ? particle : emitter;
+            var bmp = new createjs.Bitmap(image);
+            return bmp;
+        }
+
+        function tick() {
+            for(var i=0;i<len;i++) {
+                var c = clips[i];
+                if (c.index > c.delay) {
+                    c.xSpeed += c.gravityX;
+                    c.ySpeed += c.gravityY;
+
+                    c.xSpeed *= c.drag;
+                    c.ySpeed *= c.drag;
+
+                    c.x += c.xSpeed;
+                    c.y += c.ySpeed;
+
+                    c.rotation += c.angle/30;
+
+                    if (c.y > canvas.height || c.y < 0 || c.x < 0 || c.x > canvas.width) {
+                        c.x = canvas.width - c.width >> 1;
+                        c.y = canvas.height - c.height >> 1;
+                        c.gravityX = getRange(0.45,-0.15);
+                        c.gravityY = 0.13;
+                        c.delay = Math.random() * 30;
+                        c.xSpeed = (Math.random() * 5)  * Math.cos(c.angle);
+                        c.ySpeed = (Math.random() * 15) * Math.sin(c.angle);
+                    }
+                }
+                c.index++;
+            }
+            stage.update();
+        }
+    </script>
+
+</head>
+
+<body onload="init();">
+<canvas id="testCanvas" width="1024" height="500"></canvas>
+</body>
+</html>
