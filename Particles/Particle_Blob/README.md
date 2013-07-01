@@ -5,9 +5,9 @@ Having more fun with particles... this time with image assets and not just vecto
 What do you guys think?<br/>
 Here is a [preview](http://youtu.be/tWhPAIKkRu4) video.
 
-![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/Particle_Blob/ParticleBlobs.png)
-![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/images/particle.png) 
-![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/images/emitter.png) 
+![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/Particles/Particle_Blob/ParticleBlobs.png)
+![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/Particles/images/particle.png) 
+![ScreenShot](https://raw.github.com/sebastianderossi/amusement/master/Particles/images/emitter.png) 
 
 Who?
 ----------------
