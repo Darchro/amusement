@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CreateJS export from gBotInteraction</title>
+
+<!--<script src="http://code.createjs.com/createjs-2013.09.25.min.js"></script>
+<!--<script src="http://code.createjs.com/movieclip-0.7.0.min.js"></script>-->
+<script src="./js/createjs-2013.09.25.min.js"></script>
+<script src="./js/movieclip-0.7.0.min.js"></script>
+<script src="./js/gBotInteraction.js"></script>
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #f7f7f7;
+		}
+
+		canvas{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+
+			display: block;
+
+			margin-left: -512px;
+			margin-top: -364px;
+
+			background-color: #999999;
+			border: 5px solid #000000;
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.65);
+		}
+	</style>
+
+<script>
+var canvas, stage, exportRoot;
+var robotLeft;
+var robotRight;
+var c;
+var head;
+var body;
+var leftArm;
+var leftLeg;
+var rightArm;
+var rightLeg;
+var head1;
+var body1;
+var leftArm1;
+var leftLeg1;
+var rightArm1;
+var rightLeg1;
+var loaderBar;
+var loader;
+var speechBubble;
+var speechBubble1;
+var jaw;
+var jaw1;
+
+var speech = {	
+				rightArm:{
+					normal:{text:"Ouch!, that's my right arm", sound:"rightarm", font:"bold 25px Arial"}, 
+					alt:{text:"Ha ha ha he he he, thats priceless", sound:"laugh", font:"bold 24px Arial"}
+				},
+				rightLeg:{
+					normal: {text:"Hey!, that's my right leg", sound:"rightleg", font:"bold 25px Arial"},
+					alt:{text:"Ha ha ha he he he, O M G you make me L O L", sound:"laugh2", font:"bold 21px Arial"}
+				},
+				leftArm:{
+					normal: {text:"Ouch!, that's my left arm", sound:"leftarm", font:"bold 25px Arial"},
+					alt:{text:"Ouch!, I am sensitive in that area", sound:"sensitive", font:"bold 25px Arial"}
+				},
+				leftLeg:{
+					normal: {text:"Hey!, that's my left leg", sound:"leftleg", font:"bold 25px Arial"},
+					alt:{text:"Ha ha ha he he he, thats priceless", sound:"laugh", font:"bold 24px Arial"}
+				},
+				body:{
+					normal: {text:"Stop that!, it tickles", sound:"body", font:"bold 25px Arial"},
+	 				alt:{text:"Hey that is a bad touch, I need an adult, immediately", sound:"badtouch", font:"bold 21px Arial"}
+				},
+				head:{
+					normal: {text:"Ouch!, I am sensitive in that area", sound:"sensitive", font:"bold 25px Arial"},
+		 			alt:{text:"Come on man, quit it", sound:"quitit", font:"bold 25px Arial"}
+				}
+			};
+
+function init() {
+	c = createjs;
+	canvas = document.getElementById("canvas");
+	stage = new c.Stage(canvas);
+	
+	createjs.Ticker.setFPS(24);
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	startLoad();
+}
+
+function startLoad() {
+	loaderBar = new c.Shape();
+	loaderBar.width = stage.canvas.width>>1;
+	loaderBar.height = 10;
+	loaderBar.x = stage.canvas.width - loaderBar.width>>1; 
+	loaderBar.y = stage.canvas.height - loaderBar.height >> 1;
+	
+	var g = loaderBar.graphics;
+	g.f("#f7f7f7").dr(0, 0, loaderBar.width, loaderBar.height);
+	loaderBar.scaleX = 0;
+	
+	var manifest = [{src:"sounds/badtouch.mp3", id:"badtouch"},
+					{src:"sounds/body.mp3", id:"body"},
+					{src:"sounds/quitit.mp3", id:"quitit"},
+					{src:"sounds/laugh.mp3", id:"laugh"},
+					{src:"sounds/laugh2.mp3", id:"laugh2"},
+					{src:"sounds/leftarm.mp3", id:"leftarm"},
+					{src:"sounds/leftleg.mp3", id:"leftleg"},
+					{src:"sounds/sensitive.mp3", id:"sensitive"},
+					{src:"sounds/rightarm.mp3", id:"rightarm"},
+					{src:"sounds/rightleg.mp3", id:"rightleg"},
+					{src:"images/createJS.png", id:"createJS"}
+					];
+					
+	loader = new c.LoadQueue(false);
+	loader.setMaxConnections(5);
+	loader.installPlugin(c.Sound);
+	loader.addEventListener("progress", handleProgress);
+	loader.addEventListener("complete", handleComplete);
+	loader.loadManifest(manifest);
+	
+	stage.addChild(loaderBar);
+}
+
+function handleProgress(event) {
+	loaderBar.scaleX = event.loaded;
+}
+
+function getBitmap(displayObject, x, y, width, height) {
+	var obj = displayObject;
+	obj.cache(x, y, width, height);
+	obj = new c.Bitmap(obj.cacheCanvas);
+	return obj;
+}
+
+function handleComplete(event) {
+		stage.enableMouseOver();
+		
+		var bg = getBitmap(new lib.BG(), -512, -330, 1097, 789);
+		
+		robotLeft = new c.Container();
+		robotLeft.name=  "robotLeft";
+		
+		robotRight = new c.Container();
+		robotRight.name=  "robotRight";
+		
+		robotLeft.cursor = robotRight.cursor = "pointer";
+		
+		speechBubble = new lib.Speech();
+		speechBubble.x = 44;
+		speechBubble.y = 278;
+		speechBubble.alpha = 0;
+		
+		speechBubble1 = new lib.Speech1();
+		speechBubble1.x = 779;
+		speechBubble1.y = 293;
+		speechBubble1.alpha = 0;
+		
+		buildLeftRebot();
+		buildRightRebot();
+		
+		var logo = new c.Bitmap(loader.getResult("createJS"));
+		logo.x = (stage.canvas.width - 135) - 10;
+		logo.y = (stage.canvas.height - 22) - 10;
+		
+		var mouseOverClip = new lib.MouseOver();
+		mouseOverClip.x = 213;
+		mouseOverClip.y = 59;
+		
+		var rollOverClip = new lib.RollOver();
+		rollOverClip.x = 656;
+		rollOverClip.y = mouseOverClip.y;
+		
+		robotLeft.addChild(rightLeg,leftLeg,rightArm,leftArm,body,head,jaw);
+		robotRight.addChild(rightLeg1,leftLeg1,rightArm1,leftArm1,body1,head1,jaw1);
+		
+		stage.addChild(bg, robotLeft, robotRight, logo, speechBubble, speechBubble1, mouseOverClip, rollOverClip);
+		
+		createjs.Tween.get(rightLeg1).to({x:rightLeg1.targetX, y:rightLeg1.targetY}, 2500, createjs.Ease.bounceInOut);
+		createjs.Tween.get(leftLeg1).wait(500).to({x:leftLeg1.targetX, y:leftLeg1.targetY}, 2500, createjs.Ease.bounceInOut);
+		createjs.Tween.get(body1).wait(1500).to({x:body1.targetX, y:body1.targetY}, 2500, createjs.Ease.bounceInOut);
+		createjs.Tween.get(head1).wait(2500).to({x:head1.targetX, y:head1.targetY}, 2500, createjs.Ease.bounceInOut);
+		createjs.Tween.get(jaw1).wait(2500).to({x:jaw1.targetX, y:jaw1.targetY}, 2500, createjs.Ease.bounceInOut);
+		createjs.Tween.get(leftArm1).wait(4000).to({x:leftArm1.targetX, y:leftArm1.targetY}, 1500, createjs.Ease.bounceOut);
+		createjs.Tween.get(rightArm1).wait(5000).to({x:rightArm1.targetX, y:rightArm1.targetY}, 1500, createjs.Ease.bounceInOut)
+		
+		createjs.Tween.get(leftLeg).to({x:leftLeg.targetX, y:leftLeg.targetY}, 2500, createjs.Ease.bounceInOut);
+		createjs.Tween.get(rightLeg).wait(500).to({x:rightLeg.targetX, y:rightLeg.targetY}, 2500, createjs.Ease.bounceInOut);
+		createjs.Tween.get(body).wait(1500).to({x:body.targetX, y:body.targetY}, 2500, createjs.Ease.bounceInOut);
+		createjs.Tween.get(head).wait(2500).to({x:head.targetX, y:head.targetY}, 2500, createjs.Ease.bounceInOut);
+		createjs.Tween.get(jaw).wait(2500).to({x:jaw.targetX, y:jaw.targetY}, 2500, createjs.Ease.bounceInOut);
+		createjs.Tween.get(rightArm).wait(5000).to({x:rightArm.targetX, y:rightArm.targetY}, 1500, createjs.Ease.bounceOut);
+		createjs.Tween.get(leftArm).wait(6000).to({x:leftArm.targetX, y:leftArm.targetY}, 1500, createjs.Ease.bounceInOut).call(robotComplete);
+}
+
+function buildRightRebot() {
+	head1 = getBitmap(new lib.Head(), 0, 0, 109, 120);
+	head1.name = "head";
+	head1.x = 664;
+	head1.y = -2000;
+	head1.targetX = 664;
+	head1.targetY = 245;
+	
+	jaw1 = getBitmap(new lib.Jaw(), 0, 0, 87, 35);
+	jaw1.x = 676;
+	jaw1.y = -2000;
+	jaw1.targetX = 676;
+	jaw1.targetY = 355;
+	
+	body1 = getBitmap(new lib.Body(), 0, 0, 71, 109);
+	body1.name = "body";
+	body1.x = 684;
+	body1.y = -2000;
+	body1.targetX = 684;
+	body1.targetY = 381;
+	
+	rightArm1 = getBitmap(new lib.RightArm1(), -10, -10, 153, 83);
+	rightArm1.name = "rightArm";
+	rightArm1.x = 1124;
+	rightArm1.y = 392;
+	rightArm1.targetX = 740;
+	rightArm1.targetY = 392;
+	
+	leftArm1 = getBitmap(new lib.LeftArm1(), -105, -105, 230, 216);
+	leftArm1.name = "leftArm";
+	leftArm1.x = -1050;
+	leftArm1.y = 300;
+	leftArm1.targetX = 580;
+	leftArm1.targetY = 300;
+	
+	rightLeg1 = getBitmap(new lib.RightLeg(), 0, 0, 39, 148);
+	rightLeg1.name = "rightLeg";
+	rightLeg1.x = 726;
+	rightLeg1.y = -2000;
+	rightLeg1.targetX = 726;
+	rightLeg1.targetY = 475;
+	
+	leftLeg1 = getBitmap(new lib.LeftLeg(), 0, 0, 39, 148);
+	leftLeg1.name = "leftLeg";
+	leftLeg1.x = 676;
+	leftLeg1.y = -2000;
+	leftLeg1.targetX = 676;
+	leftLeg1.targetY = 475;
+}
+
+
+function buildLeftRebot() {
+	head = getBitmap(new lib.Head(), 0, 0, 109, 120);
+	head.name = "head";
+	head.x = 243;
+	head.y = -2000;
+	head.targetX = 243;
+	head.targetY = 245;
+	
+	jaw = getBitmap(new lib.Jaw(), 0, 0, 87, 35);
+	jaw.x = 254;
+	jaw.y = -2000;
+	jaw.targetX = 254;
+	jaw.targetY = 355;
+	
+	body = getBitmap(new lib.Body(), 0, 0, 71, 109);
+	body.name = "body";
+	body.x = 262;
+	body.y = -2000;
+	body.targetX = 262;
+	body.targetY = 380;
+	
+	rightArm = getBitmap(new lib.RightArm(), 0, 0, 53, 150);
+	rightArm.name = "rightArm";
+	rightArm.x = -1220;
+	rightArm.y = 392;
+	rightArm.targetX = 220;
+	rightArm.targetY = 392;
+	
+	leftArm = getBitmap(new lib.LeftArm(), 0, 0, 162, 34);
+	leftArm.name = "leftArm";
+	leftArm.x = 2322;
+	leftArm.y = 384//-2000;
+	leftArm.targetX = 322;
+	leftArm.targetY = 384;
+	
+	rightLeg = getBitmap(new lib.LeftLeg(), 0, 0, 39, 148);
+	rightLeg.name = "rightLeg";
+	rightLeg.x = 254;
+	rightLeg.y = -2000;
+	rightLeg.targetX = 254;
+	rightLeg.targetY = 475;
+	
+	leftLeg = getBitmap(new lib.RightLeg(), 0, 0, 39, 148);
+	leftLeg.name = "leftLeg";
+	leftLeg.x = 304;
+	leftLeg.y = -2000;
+	leftLeg.targetX = 304;
+	leftLeg.targetY = 475;
+}
+
+function robotComplete() {
+	robotLeft.addEventListener("mouseover", handleMouseOver);
+	robotLeft.addEventListener("rollout", handleRollOut);
+	
+	robotRight.addEventListener("rollover", handleRollOver);
+	robotRight.addEventListener("rollout", handleRollOut);
+}
+
+function handleMouseOver(event) {
+	c.Sound.stop();
+	var name = event.target.name;
+	var speechObj = speech[name];
+	var speechType = (Math.random()<0.5) ? speechObj.normal:speechObj.alt;
+	
+	speechBubble.speech.text = speechType.text;
+	speechBubble.speech.font = speechType.font;
+	playSound(speechType.sound);
+	talk(jaw);
+	
+	createjs.Tween.get(speechBubble, {override:true}).to({alpha:1}, 500);
+}
+
+function handleRollOver(event) {
+	var speechObj = speech["body"];
+	var speechType = (Math.random()<0.5) ? speechObj.normal:speechObj.alt;
+	speechBubble1.speech.text = speechType.text;
+	speechBubble1.speech.font = speechType.font;
+	playSound(speechType.sound);
+	talk(jaw1);
+	createjs.Tween.get(speechBubble1, {override:true}).to({alpha:1}, 500);
+}
+
+function talk(obj) {
+	c.Tween.get(obj, {loop:false, useTicks:true, override:true}).to({y:354.8},4).wait(1)
+				.to({y:354.5},0).to({y:350.9},3).wait(1)
+				.to({y:352.6},0).wait(1).to({y:349},0)
+				.wait(1).to({y:348.4},0).wait(1).to({y:348.5},0)
+				.to({y:349.4},3).wait(1).to({y:350},0).wait(1)
+				.to({y:355},0).wait(2).to({y:356.3},3).wait(1)
+				.to({y:359.9},0).wait(1).to({y:353.5},3).wait(1)
+				.to({y:359.9},0).to({y:352},2).wait(2).to({y:359.9},0)
+				.wait(1).to({y:350.9},0).wait(3).wait(1).to({y:354.5},0)
+				.wait(1).to({y:355},0).to({y:355.9},2).to({y:357.4},2)
+				.wait(1).to({y:354}, 0)
+				.wait(1).call(handleTalkComplete);
+}
+
+function handleTalkComplete() {
+	jaw.y = jaw1.y = 354;
+}
+
+function handleRollOut(event) {
+	speechBubble.speech.text = "";
+	speechBubble1.speech.text = "";
+	c.Tween.removeTweens(jaw);
+	c.Tween.removeTweens(jaw1);
+	c.Sound.stop();
+	jaw.y = jaw1.y = 354;
+	
+	createjs.Tween.get(speechBubble, {override:true}).to({alpha:0}, 500);
+	createjs.Tween.get(speechBubble1, {override:true}).to({alpha:0}, 500);
+}
+
+function playSound(name) {
+	c.Sound.play(name, c.Sound.INTERRUPT_ANY);
+}
+
+</script>
+</head>
+
+<body onload="init();" style="background-color:#D4D4D4">
+	<canvas id="canvas" width="1024" height="728" style="background-color:#ffffff"></canvas>
+</body>
+</html>
