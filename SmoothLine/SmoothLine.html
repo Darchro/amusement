@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+
+    <script src="http://code.createjs.com/easeljs-0.7.1.min.js"></script>
+	<style> 
+		body {
+			padding:0;
+			margin:0;
+		}
+	</style>
+    <script>
+
+        var canvas, stage;
+        var ease;
+        var vx;
+        var vy;
+        var f;
+        var oldX;
+        var oldY;
+        var oldMidX;
+        var oldMidY;
+        var container;
+        var maxLines;
+ 		var currentPoint;
+		var currentLineThickness;
+
+        function init() {
+            canvas = document.getElementById("testCanvas");
+            ease = 0.25;
+            vx = vy = 0;
+            f = 0.75;
+
+            stage = new createjs.Stage(canvas);
+ 			createjs.Touch.enable(stage);
+
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;  
+			
+			currentPoint = new createjs.Point(0, 0);  
+			container = new createjs.Container();          
+            
+			oldX = stage.mouseX;
+	        oldY = stage.mouseY;
+            oldMidX = stage.mouseX;
+            oldMidY = stage.mouseY;
+
+            maxLines = 120;
+			currentLineThickness = 1;
+
+            createjs.Ticker.setFPS(31);
+            createjs.Ticker.addEventListener("tick", tick);   
+
+			stage.addChild(container);
+			
+			var logo = new Image();  
+			logo.src = "createJS.png"
+			logo.onload = handleLogo;
+
+			document.addEventListener("keydown", handleKeydown);
+
+        }    
+
+		function handleLogo() {
+			logoBmp = new createjs.Bitmap(this);
+            logoBmp.x = stage.canvas.width - this.width;
+            logoBmp.y = stage.canvas.height - this.height;
+
+            stage.addChild(logoBmp); 
+			stage.update();      
+		}
+
+		function handleKeydown(event) {
+			if (event.keyCode == 38) {
+				 currentLineThickness++;
+			} 
+			
+			if (event.keyCode == 40) {
+				 currentLineThickness--; 
+			}
+		}
+
+        function tick() {
+            vx += (stage.mouseX - currentPoint.x) * ease;
+            vy += (stage.mouseY - currentPoint.y) * ease;
+            vx *= f;
+            vy *= f;
+
+            currentPoint.x += vx;
+            currentPoint.y += vy;                                     
+
+            if ((container.getNumChildren() >= maxLines)){
+                if (container.getNumChildren() > 1) {
+                    container.removeChildAt(0);
+                }
+            }
+
+			var midPoint = new createjs.Point(oldX + currentPoint.x>>1,  oldY + currentPoint.y>>1);
+            var g = new createjs.Graphics().ss(currentLineThickness,"round", "round").s("#000000").moveTo(midPoint.x, midPoint.y).curveTo(oldX, oldY, oldMidX, oldMidY);   
+            container.addChild(new createjs.Shape().set({graphics:g}));
+
+            oldX = currentPoint.x;
+            oldY = currentPoint.y;
+
+            oldMidX = midPoint.x;
+            oldMidY = midPoint.y;
+
+            stage.update();
+        }
+
+    </script>
+
+</head>
+
+<body onload="init();" bgcolor="#f7f7f7">
+<canvas id="testCanvas" width="1024" height="600"></canvas>
+</body>
+</html>
