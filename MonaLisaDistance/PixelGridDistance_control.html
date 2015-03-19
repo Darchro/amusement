@@ -22,7 +22,7 @@
         var squares = [];
         var container;
         var settings;
-        var isChanged = true; 
+        var isChanged = true;
 		var logoBmp;
 
         function init() {
@@ -47,20 +47,20 @@
 
             var loader = new Image();
             loader.onload = handleLoad;
-            loader.src = "mona.jpg";  
-			
-			var logo = new Image();  
+            loader.src = "mona.jpg";
+
+			var logo = new Image();
 		   	logo.src = "createJS.png"
 		    logo.onload = handleLogo;
-        } 
+        }
 
 		function handleLogo() {
 			logoBmp = new createjs.Bitmap(this);
             logoBmp.x = stage.canvas.width - this.width;
             logoBmp.y = stage.canvas.height - this.height;
 
-            stage.addChild(logoBmp); 
-			stage.update();      
+            stage.addChild(logoBmp);
+			stage.update();
 		}
 
         function handleChangeEffect() {
@@ -68,7 +68,7 @@
         }
 
         function handleLoad() {
-            var width = 25;
+            var width = 15;
             var height = 25;
             var padding = 1;
 
@@ -78,25 +78,24 @@
             container = new createjs.Container();
             container.cursor = "pointer";
 
-            var source = new createjs.Bitmap(this);
             var total = cols*rows;
-
+			var rect;
             for(var i=0;i<total;i++) {
-                var square = new createjs.Bitmap(source.cacheCanvas);
-                source.uncache();
+				var source = new createjs.Bitmap(this);
                 var x = (width + padding) * (i%cols);
                 var y = (i/cols | 0) * (height+padding);
-                source.cache(x, y, width, height, 1);
-                square.regX = width>>1;
-                square.regY = height>>1;
-                square.x = x;
-                square.y = y;
-                squares.push(square);
-                container.addChild(square);
+                rect = new createjs.Rectangle(x, y, width, height);
+				source.sourceRect = rect;
+				source.regX = width>>1;
+				source.regY = height>>1;
+				source.x = x;
+				source.y = y;
+                squares.push(source);
+                container.addChild(source);
             }
 
             container.x = canvas.width - (cols*width)>>1;
-            container.y = canvas.height - (rows*height)>>1
+            container.y = canvas.height - (rows*height)>>1;
             stage.addChild(container);
         }
 

@@ -19,8 +19,8 @@ A repo for my own amusement. <br/>A collection of small code demos / prototypes 
               
 Why?
 ----------------
-To showing how coding with CreateJS can be fun! 
-If you build something cool share it with other people and let me know what you made.<br/>    
+To show how coding with CreateJS can be fun!<br/> 
+If you build something interesting share it with others and let me know what you made.<br/>    
 The code found here is free for anyone to use but feel free to give me a shout out.    
 
 How?
@@ -45,7 +45,7 @@ Visit the following:
 - [Community Forum](http://www.community.createjs.com)
 - [CreateJS Git Hub](https://github.com/CreateJS)  
 
-If anyone has any suggestions for how we can improve the libraries, or want to share examples or fixes don't hesitate to get in touch.   
+If anyone has any suggestions on how we can improve the libraries, or want to share examples or fixes don't hesitate to get in touch.   
 
 ------------
-All code is <b>copyright 2013 Sebastian DeRossi</b> and is free to use, copy, and modify under the MIT license.
+All code is <b>copyright 2015 Sebastian DeRossi</b> and is free to use, copy, and modify under the MIT license.
