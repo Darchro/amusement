@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gary</title>
+
+<script src="http://code.createjs.com/easeljs-0.7.1.min.js"></script>
+<script src="http://code.createjs.com/tweenjs-0.5.1.min.js"></script>
+<script src="http://code.createjs.com/movieclip-0.7.1.min.js"></script>
+<script src="https://code.createjs.com/preloadjs-0.6.0.min.js"></script>
+<script src="https://code.createjs.com/soundjs-0.6.0.min.js"></script>
+<script src="Gary.js"></script>
+
+<script>
+var canvas, stage, exportRoot;
+var loadBar;
+function init() {
+	canvas = document.getElementById("canvas");
+	exportRoot = new lib.Gary();
+	stage = new createjs.Stage(canvas);
+
+	//set up preloader
+	loadBar = new createjs.Shape();
+	loadBar.graphics.f("#000000").dr(0, 0, 200, 10);
+	loadBar.set({x:canvas.width-200>>1, y:canvas.height-10>>1});
+	loadBar.scaleX = 0;
+	loadBarBG = new createjs.Shape();
+	loadBarBG.graphics.f("#990000").dr(0, 0, 200, 10);
+	loadBarBG.set({x:canvas.width-200>>1, y:canvas.height-10>>1});
+	stage.addChild(loadBarBG, loadBar);
+	stage.update();
+
+	createjs.Sound.registerPlugins([createjs.WebAudioPlugin, createjs.HTMLAudioPlugin]);
+	createjs.Sound.alternateExtensions = ["mp3", "ogg"];
+	createjs.Sound.defaultInterruptBehaviour = createjs.Sound.INTERRUPT_LATE;
+
+	// set up the load queue, and listen for its events:
+	queue = new createjs.LoadQueue();
+	queue.installPlugin(createjs.Sound);
+	queue.on("progress", handleProgress, this);
+	queue.on("fileload", handleFileLoad, this);
+	queue.on("complete", handleLoadComplete, this, true);
+
+	queue.loadManifest([
+		{"src":"sounds/garywalk_chill.mp3", "id":"music"},
+		{"src":"sounds/BodySlam.mp3", "id":"BodySlam"},
+		{"src":"sounds/DirtSlide.mp3", "id":"DirtSlide"},
+		{"src":"sounds/EnemyHit.mp3", "id":"EnemyHit"},
+		{"src":"sounds/HitHard4.mp3", "id":"HitHard4"},
+		{"src":"sounds/LaserGunShot.mp3", "id":"LaserGunShot", "data":8},
+		{"src":"sounds/PressPlay.mp3", "id":"PressPlay"},
+		{"src":"sounds/TunnelCollision.mp3", "id":"TunnelCollision"},
+		{"src":"sounds/jump4.mp3", "id":"Jump"},
+		{"src":"images/PlanteryGaryBG.png", "id":"BG"}
+	], true);
+
+}
+
+function handleFileLoad(event) {
+	if (event.item.id == "BG") {
+		background = new createjs.Bitmap(event.result);
+	}
+}
+
+function handleProgress(event) {
+	loadBar.scaleX = event.progress;
+	console.log(loadBar.scaleX);
+	stage.update();
+}
+
+function handleLoadComplete() {
+	stage.enableMouseOver();
+	//Quick and effect way to remove everything from the stage.
+	stage.removeAllChildren();
+	// start the music playing as soon as it's loaded (no need to wait):
+	createjs.Sound.play("music", {loop:-1});
+
+	stage.addChild(background, exportRoot);
+
+	gary = exportRoot.gary;
+	//Set up button interaction.
+	shootBtn = exportRoot.shootBtn;
+	shootBtn.addEventListener("click",handleClick);
+
+	createjs.Ticker.setFPS(lib.properties.fps);
+	createjs.Ticker.addEventListener("tick", stage);
+}
+
+function handleClick() {
+	gary.gotoAndPlay("shoot");
+	createjs.Sound.play("LaserGunShot");
+}
+</script>
+</head>
+
+<body onload="init();" style="background-color:#D4D4D4">
+	<canvas id="canvas" width="780" height="400" style="background-color:#FFFFFF"></canvas>
+</body>
+</html>

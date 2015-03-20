@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gary</title>
+
+<script src="http://code.createjs.com/easeljs-0.8.0.min.js"></script>
+<script src="http://code.createjs.com/tweenjs-0.6.0.min.js"></script>
+<script src="http://code.createjs.com/movieclip-0.8.0.min.js"></script>
+<script src="Gary.js"></script>
+
+<script>
+var canvas, stage, exportRoot;
+var gary;
+var face;
+var head;
+function init() {
+	canvas = document.getElementById("canvas");
+	stage = new createjs.Stage(canvas);
+
+	gary = new lib.Hero();
+	//SD:Position Gary on stage.
+	gary.set({x:138, y:330});
+	//SD:Add Gary to the display list.
+	stage.addChild(gary);
+
+	//SD:Create interactive button
+	myButton = new lib.MyButton();
+	//SD:Position button on stage.
+	myButton.set({x:598, y:340});
+	//SD:Helper class used to convert movieClips in proper button.
+	myButtonHelper = new createjs.ButtonHelper(this.myButton, 0, 1, 2, false, new lib.MyButton(), 3);
+	//SD:Add click event handler
+	myButton.addEventListener("click", handleClick);
+	//SD:Enable rollovers
+	stage.enableMouseOver();
+	//SD:Add button to display list.
+	stage.addChild(myButton);
+	stage.enableMouseOver();
+
+	/*
+	///SD:Create a bunch of instances
+	var _gray;
+	//SD:Random scale 0.25 to 1.25;
+	var scale = 0.25+Math.random();
+	for(var i=0;i<20;i++) {
+		_gray = new lib.Hero();
+		_gray.set({x:Math.random()*canvas.width, y:Math.random()*canvas.height, scaleX:scale,scaleY:scale});
+		stage.addChild(_gray);
+	}*/
+
+	//SD:Create a instance of Head
+	/*head = new lib.Head();
+	head.set({x:450, y:230});
+	stage.addChild(head);*/
+
+	//SD:Create a instance of face
+	/*face = new lib.face();
+	face.set({x:620, y:200});
+	stage.addChild(face);*/
+
+	stage.update();
+
+	createjs.Ticker.setFPS(lib.properties.fps);
+	createjs.Ticker.addEventListener("tick", stage);
+	//createjs.Ticker.addEventListener("tick", onTick);
+}
+
+function handleClick() {
+	gary.scaleX = gary.scaleY = 0.25 + Math.random()
+}
+
+function onTick(event) {
+	//SD:Rotate head
+	//head.rotation -=1;
+	//SD:Rotate face
+	//head.face.rotation += 4;
+	//head.hair.rotation = -40;
+	//head.hair.set({x:-40, y:-80})
+	stage.update();
+}
+</script>
+</head>
+
+<body onload="init();" style="background-color:#D4D4D4">
+	<canvas id="canvas" width="780" height="400" style="background-color:#FFFFFF"></canvas>
+</body>
+</html>

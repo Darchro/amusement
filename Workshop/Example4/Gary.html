@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gary</title>
+
+<script src="http://code.createjs.com/easeljs-0.8.0.min.js"></script>
+<script src="http://code.createjs.com/tweenjs-0.6.0.min.js"></script>
+<script src="http://code.createjs.com/movieclip-0.8.0.min.js"></script>
+<script src="Gary.js"></script>
+
+<script>
+var canvas, stage;
+var index = 0;
+var gary;
+var hairIndex = 0;
+var faceIndex =  0;
+function init() {
+	canvas = document.getElementById("canvas");
+	stage = new createjs.Stage(canvas);
+
+	gary = new lib.Hero();
+	//SD:Position Gary on stage.
+	gary.set({x:138, y:330});
+	//SD:Add Gary to the display list.
+	stage.addChild(gary);
+
+	hair = gary.head.hair;
+	face = gary.head.face;
+
+	exportRoot = new lib.Gary();
+	stage.addChild(exportRoot);
+
+	actionBtn = exportRoot.actionBtn;
+	actionBtn.addEventListener("click", handleActionClick);
+
+	hairBtn = exportRoot.hairBtn;
+	hairBtn.addEventListener("click", handleHairClick);
+
+	faceBtn = exportRoot.faceBtn;
+	faceBtn.addEventListener("click", handleFaceClick);
+
+	stage.enableMouseOver();
+	stage.update();
+	createjs.Ticker.setFPS(lib.properties.fps);
+	createjs.Ticker.addEventListener("tick", stage);
+}
+
+function handleActionClick(event) {
+	//SD:Return all labels on maintimeline
+	var labels = gary.labels;
+	//SD:Index to play next frame label.
+	var label = ++index%labels.length;
+	//SD:Jump to label animation.
+	gary.gotoAndPlay(labels[label].label);
+}
+
+function handleHairClick(event) {
+	hair.gotoAndStop(++hairIndex%this.hair.timeline.duration);
+}
+
+function handleFaceClick(event) {
+	face.gotoAndStop(++faceIndex%this.face.timeline.duration);
+}
+</script>
+</head>
+
+<body onload="init();" style="background-color:#D4D4D4">
+	<canvas id="canvas" width="780" height="400" style="background-color:#FFFFFF"></canvas>
+</body>
+</html>
