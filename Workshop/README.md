@@ -20,13 +20,13 @@ Community Evangelist - CreateJS<br/>
 [YouTube:www.youtube.com/sebastianderossi](http://www.youtube.com/sebastianderossi)<br/>
 [Vimeo:www.vimeo.com/sderossi](http://www.vimeo.com/sderossi)  
 
-[Example 1](https://github.com/sebastianderossi/amusement/tree/master/Workshop/Example1)
+Example 1
 ----------
 * Example of exported MovieClip from Flash CC.
 * Generated Javascript from library assets.
 * Generated HTML based on FLA stage content.
 
-[Example 2](https://github.com/sebastianderossi/amusement/tree/master/Workshop/Example2)
+Example 2
 ----------
 * Button MovieClip instance from exportRoot.
 + Button has different states:
@@ -40,7 +40,7 @@ Community Evangelist - CreateJS<br/>
 * Dispatch custom events.
 * Dispatch event via timeline code.
  
-[Example 3](https://github.com/sebastianderossi/amusement/tree/master/Workshop/Example3)
+Example 3
 ----------
 * Creating instance dynamically from library assets. Ex: Head / face
 * Create multiple instances dynamically.
@@ -48,12 +48,12 @@ Community Evangelist - CreateJS<br/>
 * Show button helper class.
 * Targeting nested clips.
 
-[Example 4](https://github.com/sebastianderossi/amusement/tree/master/Workshop/Example4)
+Example 4
 ----------
 * Create **Gary** instance + buttons controlling MovieClip's timeline.
 * Targeting nested MovieClip timelines.
 
-[Example 5](https://github.com/sebastianderossi/amusement/tree/master/Workshop/Example5)
+Example 5
 ----------
 * Preloading sounds and images.
 * Create visual preloader bar.
