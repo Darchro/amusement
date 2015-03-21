@@ -89,6 +89,7 @@ Travis Miller - Designer extraordinaire
 Lanny McNie - SoundJS / PreloadJS
 
 * [Twitter:@astrostyle](https://twitter.com/astrostyle)
+
 ------------
 All code is <b>copyright 2015 Sebastian DeRossi</b> and is free to use, copy, and modify under the MIT license.
 
