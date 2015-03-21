@@ -76,11 +76,19 @@ Grant Skinner - CreateJS Creator
 * [Twitter:@gskinner](https://twitter.com/gskinner)
 * [gskinner.com](http://gskinner.com)
 
-Mike Gaboury - artist extraordinaire
+Mike Gaboury - illustrator extraordinaire
 
 * [Twitter:@mike_gaboury](https://twitter.com/mike_gaboury)
 * [mikegaboury.com](http://mikegaboury.tumblr.com/)  
 
+Travis Miller - Designer extraordinaire
+
+* [Twitter:@travismillerdes](https://twitter.com/travismillerdes)
+* [travismillerdesign.com](http://travismillerdesign.com/) 
+
+Lanny McNie - SoundJS / PreloadJS
+
+* [Twitter:@astrostyle](https://twitter.com/astrostyle)
 ------------
 All code is <b>copyright 2015 Sebastian DeRossi</b> and is free to use, copy, and modify under the MIT license.
 
