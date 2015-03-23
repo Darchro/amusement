@@ -92,5 +92,5 @@ Lanny McNie - SoundJS / PreloadJS
 
 ------------
 All code is <b>copyright 2015 Sebastian DeRossi</b> and is free to use, copy, and modify under the MIT license.
-
+All art & graphics is copyright 2013 gskinner.com, inc. and cannot be used without permission.
 **All code should be run via localhost or online.**
