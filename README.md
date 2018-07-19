@@ -6,12 +6,12 @@ A place to have fun with [CreateJS](http://www.createjs.com).
 Who?
 ----------------
 Sebastian DeRossi<br/>
-Community Evangelist - CreateJS<br/>
-<a href="mailto:sebastian@gskinner.com">gskinner.com</a>     
+<a href="mailto:sebastian.derossi@gmail">email</a>     
 
 [twitter:@derossi_s](http://www.twitter.com/derossi_s) <br/>
 [youtube:www.youtube.com/sebastianderossi](http://www.youtube.com/sebastianderossi)<br/>
 [vimeo:www.vimeo.com/sderossi](http://www.vimeo.com/sderossi)  
+[codepen:www.codepen.io/derossi_s](http://www.codepen.io/derossi_s)  
 
 What?
 ----------------
@@ -48,4 +48,4 @@ Visit the following:
 If anyone has any suggestions on how we can improve the libraries, or want to share examples or fixes don't hesitate to get in touch.   
 
 ------------
-All code is <b>copyright 2015 Sebastian DeRossi</b> and is free to use, copy, and modify under the MIT license.
+All code is <b>copyright 2018 Sebastian DeRossi</b> and is free to use, copy, and modify under the MIT license.
